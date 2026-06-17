@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>부산경남사업부 6월 Stretch Goal</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;600;700;800&display=swap');
@@ -362,12 +362,74 @@
     color: var(--red);
   }
 
+
+  /* ===== 모바일 최적화 ===== */
   @media (max-width: 768px) {
-    main { padding: 16px; }
-    .kpi-grid { grid-template-columns: repeat(2, 1fr); }
-    header { padding: 12px 16px; }
-    .tabs { padding: 0 12px; }
+    header { padding: 10px 14px; }
+    .header-title { font-size: 14px; }
+    .header-sub { display: none; }
+    .logo { width: 30px; height: 30px; font-size: 13px; }
+    .dday-badge { font-size: 12px; padding: 5px 10px; }
+
+    /* 탭: 아이콘만 보이게 + 스크롤 */
+    .tabs { 
+      padding: 0 8px; 
+      overflow-x: auto; 
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+    .tabs::-webkit-scrollbar { display: none; }
+    .tab { 
+      padding: 10px 12px; 
+      font-size: 13px; 
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    main { padding: 12px; }
+
+    /* SD 입력 폼 모바일 */
+    .input-form { 
+      padding: 16px; 
+      max-width: 100%;
+      border-radius: 8px;
+    }
+    .form-title { font-size: 15px; margin-bottom: 16px; }
+    .form-input, .form-select { 
+      font-size: 16px !important; /* iOS zoom 방지 */
+      padding: 11px 12px;
+    }
+    .form-label { font-size: 13px; }
+    .btn-primary { 
+      padding: 15px !important; 
+      font-size: 16px !important;
+      border-radius: 10px !important;
+    }
+    #actual-display { font-size: 14px; padding: 10px 12px; }
+
+    /* KPI 카드 2열 */
+    .kpi-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+    .kpi-value { font-size: 20px; }
+    .kpi-card { padding: 12px; }
+
+    /* 테이블 모바일 스크롤 */
+    .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    table { min-width: 500px; }
+    td, th { padding: 8px 10px; font-size: 12px; }
+
+    /* 입력현황 카드 1열 */
+    .status-grid { grid-template-columns: 1fr; }
+
+    /* 미입력 섹션 */
+    .missing-chip { font-size: 11px; padding: 2px 7px; }
   }
+
+  /* 아주 작은 화면 */
+  @media (max-width: 380px) {
+    .tab { font-size: 12px; padding: 9px 10px; }
+    .kpi-value { font-size: 18px; }
+  }
+
 </style>
 <!-- Firebase SDK -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
@@ -387,17 +449,17 @@
 </header>
 
 <div class="tabs">
-  <div class="tab active" onclick="switchTab('dashboard')">📊 대시보드</div>
-  <div class="tab" onclick="switchTab('branches')">🏢 지사별 현황</div>
+  <div class="tab active" onclick="switchTab('sd-input')">✏️ 실적 입력</div>
+  <div class="tab" onclick="switchTab('dashboard')">📊 대시보드</div>
   <div class="tab" onclick="switchTab('input-status')">✅ 입력 현황</div>
-  <div class="tab" onclick="switchTab('sd-input')">✏️ SD 입력</div>
+  <div class="tab" onclick="switchTab('branches')">🏢 지사별</div>
   <div class="tab" onclick="switchTab('admin')">⚙️ 관리자</div>
 </div>
 
 <main>
 
 <!-- ===== 대시보드 탭 ===== -->
-<div class="tab-content active" id="tab-dashboard">
+<div class="tab-content" id="tab-dashboard">
 
   <div class="kpi-grid" id="kpiGrid">
     <div class="kpi-card">
@@ -415,7 +477,7 @@
     </div>
     <div class="kpi-card">
       <div class="kpi-label">전체 목표</div>
-      <div class="kpi-value" id="kpi-target">1,746억</div>
+      <div class="kpi-value" id="kpi-target">—</div>
       <div class="kpi-sub">24개 지사 합산</div>
     </div>
     <div class="kpi-card">
@@ -465,20 +527,20 @@
 <div class="tab-content" id="tab-branches">
   <div class="section-title">지사별 상세 현황</div>
   <div class="table-wrap">
-    <table>
+    <table id="branchDetailTableWrap">
       <thead>
         <tr>
-          <th>순위</th>
+          <th style="width:36px">순위</th>
           <th>지사</th>
-          <th>지사장</th>
-          <th>목표(원)</th>
-          <th>실적(원)</th>
+          <th>목표</th>
+          <th>누적실적</th>
           <th>달성률</th>
-          <th>SD수</th>
-          <th>입력완료</th>
-          <th>무진계약율</th>
-          <th>가정집계약</th>
-          <th>SIPM</th>
+          <th>금일실적</th>
+          <th>10망<br><span style="font-weight:400;font-size:10px">평균</span></th>
+          <th>무진율<br><span style="font-weight:400;font-size:10px">평균</span></th>
+          <th>가정집<br><span style="font-weight:400;font-size:10px">합계</span></th>
+          <th>SIPM<br><span style="font-weight:400;font-size:10px">합계</span></th>
+          <th>입력</th>
         </tr>
       </thead>
       <tbody id="branchDetailTable"></tbody>
@@ -493,7 +555,7 @@
 </div>
 
 <!-- ===== SD 입력 탭 ===== -->
-<div class="tab-content" id="tab-sd-input">
+<div class="tab-content active" id="tab-sd-input">
   <div class="input-form">
     <div class="form-title">📝 오늘의 실적 입력</div>
 
@@ -512,64 +574,64 @@
     </div>
 
     <div class="form-group">
-      <label class="form-label">① 현재실적 (원) <span style="color:var(--accent);font-size:11px">매니저 업로드 자동반영</span></label>
-      <input type="text" class="form-input readonly-field" id="input1" readonly placeholder="일보 데이터 자동입력">
-      <div class="form-note">매일 오전 매니저님이 업로드 후 자동표시</div>
+      <label class="form-label">① 현재실적
+        <span style="color:var(--accent);font-size:11px;margin-left:6px">매일 오전 자동반영 — 입력 불필요</span>
+      </label>
+      <div id="actual-display" style="background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:11px 14px;font-size:15px;font-weight:700;color:var(--text2);">
+        이름을 선택하면 자동표시됩니다
+      </div>
     </div>
 
     <div class="divider"></div>
+    <div style="font-size:12px;color:var(--text2);margin-bottom:14px">② ~ ⑥ 항목만 입력해주세요 (누계 기준)</div>
 
     <div class="form-group">
       <label class="form-label">② 금일실적 (원)</label>
       <input type="number" class="form-input" id="input2" placeholder="예: 460000">
-      <div class="form-note">당월 금액 입력 (이월 별도)</div>
     </div>
 
     <div class="form-group">
-      <label class="form-label">③ 누적 10망 달성률 (명)</label>
+      <label class="form-label">③ 누적 10망 달성 수 (망)</label>
       <input type="number" class="form-input" id="input3" placeholder="예: 6">
-      <div class="form-note">미달성망 입력란 (아래에 직접 입력)</div>
     </div>
 
     <div class="form-group">
-      <label class="form-label">③-1 미달성망 (쉼표로 구분)</label>
-      <input type="text" class="form-input" id="input3b" placeholder="예: SIPM,바이퍼,살균기,정수기">
+      <label class="form-label">③ 미달성망 품목 (쉼표 구분)</label>
+      <input type="text" class="form-input" id="input3b" placeholder="예: SIPM,바이퍼,살균기">
     </div>
 
     <div class="form-group">
       <label class="form-label">④ 누적 무진 계약율 (%)</label>
       <input type="number" class="form-input" id="input4" placeholder="예: 75">
-      <div class="form-note">미계약 건수도 입력하세요</div>
     </div>
 
     <div class="form-group">
-      <label class="form-label">④-1 미계약 건수</label>
+      <label class="form-label">④ 미계약 건수 (건)</label>
       <input type="number" class="form-input" id="input4b" placeholder="예: 1">
     </div>
 
     <div class="form-group">
-      <label class="form-label">⑤ 누적 가정집 계약 건 (건)</label>
+      <label class="form-label">⑤ 누적 가정집 계약 (건)</label>
       <input type="number" class="form-input" id="input5" placeholder="예: 1">
-      <div class="form-note">통합약정 건수도 입력</div>
     </div>
 
     <div class="form-group">
-      <label class="form-label">⑤-1 통합약정 건수</label>
+      <label class="form-label">⑤ 통합약정 (건)</label>
       <input type="number" class="form-input" id="input5b" placeholder="예: 1">
     </div>
 
     <div class="form-group">
-      <label class="form-label">⑥ 누적 SIPM 계약건 (건)</label>
+      <label class="form-label">⑥ 누적 SIPM 계약 (건)</label>
       <input type="number" class="form-input" id="input6" placeholder="예: 0">
     </div>
 
-    <button class="btn btn-primary" style="width:100%;padding:12px;font-size:14px;margin-top:4px" onclick="submitSD()">
-      제출하고 단톡용 텍스트 생성
+    <button class="btn btn-primary" style="width:100%;padding:13px;font-size:15px;margin-top:8px;border-radius:8px" onclick="submitSD()">
+      ✅ 제출
     </button>
 
-    <div class="copy-result" id="copyResult"></div>
-    <div id="copyBtnWrap" style="display:none;margin-top:10px">
-      <button class="btn btn-green" style="width:100%" onclick="copyText()">📋 복사하기 (단톡에 붙여넣기)</button>
+    <div id="submitSuccess" style="display:none;margin-top:14px;background:rgba(63,185,80,0.1);border:1px solid rgba(63,185,80,0.3);border-radius:8px;padding:14px;text-align:center;">
+      <div style="font-size:18px;margin-bottom:4px">✅ 제출 완료!</div>
+      <div style="font-size:13px;color:var(--text2)" id="submitInfo"></div>
     </div>
   </div>
 </div>
@@ -621,74 +683,72 @@
 // 데이터 정의
 // ==============================
 const BRANCHES = [
-  { id:"부산기장", name:"부산기장지사", manager:"강현묵", sd:2, target:8137000000 },
-  { id:"울산북부", name:"울산북부지사", manager:"김대성", sd:1, target:4994000000 },
-  { id:"사천남해", name:"사천남해지사", manager:"김창호", sd:2, target:3719000000 },
-  { id:"김해남부", name:"김해남부지사", manager:"김세호", sd:2, target:6583000000 },
-  { id:"울산남부", name:"울산남부지사", manager:"손창민", sd:2, target:11384000000 },
-  { id:"진주서부", name:"진주서부지사", manager:"임성돈", sd:1, target:6111000000 },
-  { id:"부산북부", name:"부산북부지사", manager:"안병천", sd:1, target:7019000000 },
-  { id:"해운대",   name:"해운대지사",   manager:"박수현", sd:2, target:8032000000 },
-  { id:"양산",     name:"양산지사",     manager:"김동민", sd:2, target:7316000000 },
-  { id:"울산중부", name:"울산중부지사", manager:"정상혁", sd:2, target:6356000000 },
-  { id:"부산서부", name:"부산서부지사", manager:"김진호", sd:2, target:8643000000 },
-  { id:"부산사하", name:"부산사하지사", manager:"임형준", sd:2, target:5273000000 },
-  { id:"김해북부", name:"김해북부지사", manager:"권금주", sd:2, target:7997000000 },
-  { id:"진주동부", name:"진주동부지사", manager:"양용석", sd:1, target:6391000000 },
-  { id:"부산남부", name:"부산남부지사", manager:"소동훈", sd:2, target:10162000000 },
-  { id:"창원서부", name:"창원서부지사", manager:"박무성", sd:1, target:5570000000 },
-  { id:"부산수영", name:"부산수영지사", manager:"서혜교", sd:2, target:6600000000 },
-  { id:"부산진구", name:"부산진구지사", manager:"박병갑", sd:2, target:9760000000 },
-  { id:"창원동부", name:"창원동부지사", manager:"최준혁", sd:2, target:5500000000 },
-  { id:"부산동래", name:"부산동래지사", manager:"임종규", sd:2, target:8172000000 },
-  { id:"창원북부", name:"창원북부지사", manager:"이상배", sd:1, target:7194000000 },
-  { id:"창원남부", name:"창원남부지사", manager:"임진섭", sd:1, target:6705000000 },
-  { id:"거제통영", name:"거제통영지사", manager:"이태곤", sd:1, target:7211000000 },
-  { id:"울산서부", name:"울산서부지사", manager:"안성훈", sd:3, target:9778000000 },
+  { id:"부산기장", name:"부산기장지사", manager:"강현묵", sd:2, target:8137000 },
+  { id:"울산북부", name:"울산북부지사", manager:"김대성", sd:1, target:4994000 },
+  { id:"사천남해", name:"사천남해지사", manager:"김창호", sd:2, target:3719000 },
+  { id:"김해남부", name:"김해남부지사", manager:"김세호", sd:2, target:6583000 },
+  { id:"울산남부", name:"울산남부지사", manager:"손창민", sd:2, target:11384000 },
+  { id:"진주서부", name:"진주서부지사", manager:"임성돈", sd:1, target:6111000 },
+  { id:"부산북부", name:"부산북부지사", manager:"안병천", sd:1, target:7019000 },
+  { id:"해운대",   name:"해운대지사",   manager:"박수현", sd:2, target:8032000 },
+  { id:"양산",     name:"양산지사",     manager:"김동민", sd:2, target:7316000 },
+  { id:"울산중부", name:"울산중부지사", manager:"정상혁", sd:2, target:6356000 },
+  { id:"부산서부", name:"부산서부지사", manager:"김진호", sd:2, target:8643000 },
+  { id:"부산사하", name:"부산사하지사", manager:"임형준", sd:2, target:5273000 },
+  { id:"김해북부", name:"김해북부지사", manager:"권금주", sd:2, target:7997000 },
+  { id:"진주동부", name:"진주동부지사", manager:"양용석", sd:1, target:6391000 },
+  { id:"부산남부", name:"부산남부지사", manager:"소동훈", sd:2, target:10162000 },
+  { id:"창원서부", name:"창원서부지사", manager:"박무성", sd:1, target:5570000 },
+  { id:"부산수영", name:"부산수영지사", manager:"서혜교", sd:2, target:6600000 },
+  { id:"부산진구", name:"부산진구지사", manager:"박병갑", sd:2, target:9760000 },
+  { id:"창원동부", name:"창원동부지사", manager:"최준혁", sd:2, target:5500000 },
+  { id:"부산동래", name:"부산동래지사", manager:"임종규", sd:2, target:8172000 },
+  { id:"창원북부", name:"창원북부지사", manager:"이상배", sd:1, target:7194000 },
+  { id:"창원남부", name:"창원남부지사", manager:"임진섭", sd:1, target:6705000 },
+  { id:"거제통영", name:"거제통영지사", manager:"이태곤", sd:1, target:7211000 },
+  { id:"울산서부", name:"울산서부지사", manager:"안성훈", sd:3, target:9778000 },
 ];
 
 const SD_LIST = [
   { name:"엄상준", branch:"부산기장" },
-  { name:"최준호", branch:"부산기장" },
-  { name:"신호일", branch:"울산북부" },
-  { name:"장지승", branch:"사천남해" },
-  { name:"안재이", branch:"사천남해" },
-  { name:"안덕욱", branch:"김해남부" },
-  { name:"최수영", branch:"김해남부" },
-  { name:"허성덕", branch:"울산남부" },
-  { name:"허은영", branch:"울산남부" },
-  { name:"정원환", branch:"진주서부" },
-  { name:"문병윤", branch:"부산북부" },
-  { name:"이구영", branch:"해운대" },
+  { name:"안진옥", branch:"부산기장" },
+  { name:"신호일", branch:"울산남부" },
+  { name:"장지승", branch:"울산남부" },
+  { name:"허성덕", branch:"양산" },
+  { name:"조선영", branch:"양산" },
+  { name:"김정훈", branch:"부산남부" },
+  { name:"문병훈", branch:"부산남부" },
+  { name:"정대환", branch:"진주서부" },
+  { name:"이규열", branch:"해운대" },
   { name:"조용진", branch:"해운대" },
-  { name:"이영익", branch:"양산" },
-  { name:"이구영", branch:"양산" },
-  { name:"김성근", branch:"울산중부" },
-  { name:"김현성", branch:"울산중부" },
-  { name:"안형민", branch:"부산서부" },
-  { name:"이수하", branch:"부산서부" },
-  { name:"김경원", branch:"부산사하" },
-  { name:"박진수", branch:"부산사하" },
-  { name:"김선경", branch:"김해북부" },
-  { name:"박찬우", branch:"김해북부" },
-  { name:"류승목", branch:"진주동부" },
-  { name:"박지완", branch:"부산남부" },
-  { name:"김지승", branch:"부산남부" },
-  { name:"조상엽", branch:"창원서부" },
-  { name:"정연진", branch:"부산수영" },
-  { name:"김현성", branch:"부산수영" },
+  { name:"허은영", branch:"울산북부" },
+  { name:"문하진", branch:"창원북부" },
+  { name:"송혜린", branch:"김해남부" },
+  { name:"최수형", branch:"김해남부" },
+  { name:"김미나", branch:"창원남부" },
+  { name:"조상원", branch:"창원서부" },
+  { name:"박지환", branch:"부산북부" },
   { name:"권오성", branch:"부산진구" },
-  { name:"박근태", branch:"부산진구" },
-  { name:"차민호", branch:"창원동부" },
-  { name:"박선정", branch:"부산동래" },
-  { name:"박근태", branch:"부산동래" },
-  { name:"문해진", branch:"창원북부" },
-  { name:"송해민", branch:"창원남부" },
-  { name:"황관영", branch:"창원남부" },
+  { name:"김연성", branch:"부산진구" },
   { name:"이수하", branch:"거제통영" },
-  { name:"김미나", branch:"울산서부" },
+  { name:"류승목", branch:"진주동부" },
+  { name:"안정민", branch:"부산서부" },
+  { name:"이명학", branch:"부산서부" },
+  { name:"김상용", branch:"김해북부" },
+  { name:"박찬우", branch:"김해북부" },
+  { name:"박선정", branch:"부산동래" },
+  { name:"김지승", branch:"부산동래" },
+  { name:"김동원", branch:"부산사하" },
+  { name:"박진수", branch:"부산사하" },
+  { name:"김성근", branch:"울산중부" },
+  { name:"최강림", branch:"울산중부" },
+  { name:"한재익", branch:"사천남해" },
   { name:"전우민", branch:"울산서부" },
-  { name:"김경은", branch:"울산서부" },
+  { name:"김용은", branch:"울산서부" },
+  { name:"정연진", branch:"부산수영" },
+  { name:"박근태", branch:"부산수영" },
+  { name:"최준호", branch:"창원동부" },
+  { name:"차민호", branch:"창원동부" },
 ];
 
 // 중복 제거된 SD 목록
@@ -721,7 +781,10 @@ function fmt(n) {
 function fmtW(n) {
   if (!n && n !== 0) return '—';
   const v = Number(n);
-  if (v >= 100000000) return (v/100000000).toFixed(1) + '억';
+  if (v >= 100000000) {
+    const eok = v / 100000000;
+    return eok % 1 === 0 ? eok.toFixed(0) + '억' : eok.toFixed(1) + '억';
+  }
   if (v >= 10000000) return (v/10000000).toFixed(1) + '천만';
   if (v >= 1000000) return (v/1000000).toFixed(1) + '백만';
   return fmt(v);
@@ -768,6 +831,7 @@ function renderDashboard() {
   document.getElementById('kpi-dday').textContent = dday + '일';
 
   const TOTAL_TARGET = BRANCHES.reduce((s,b) => s+b.target, 0);
+  document.getElementById('kpi-target').textContent = fmtW(TOTAL_TARGET);
   
   // 지사별 실적 집계 (actuals에서 가져옴)
   let totalActual = 0;
@@ -851,31 +915,82 @@ function renderBranchDetail() {
     const pct = b.target > 0 ? actual / b.target * 100 : 0;
     const branchSubs = todaySubs.filter(s => s.branch === b.id);
     const sdCount = UNIQUE_SDS.filter(sd => sd.branch === b.id).length;
-    // 집계
-    const totMujin = branchSubs.reduce((s,x)=>s+(Number(x.mujinPct)||0),0);
-    const totGajung = branchSubs.reduce((s,x)=>s+(Number(x.gajung)||0),0);
-    const totSipm = branchSubs.reduce((s,x)=>s+(Number(x.sipm)||0),0);
-    return { ...b, actual, pct, sdCount, submitted: branchSubs.length, totMujin, totGajung, totSipm };
+    const n = branchSubs.length;
+    // 금일실적 합계
+    const todayActual = branchSubs.reduce((s,x)=>s+(Number(x.v2)||0),0);
+    // 평균 집계
+    const avgMang = n > 0 ? (branchSubs.reduce((s,x)=>s+(Number(x.v3)||0),0)/n).toFixed(1) : null;
+    const avgMujin = n > 0 ? (branchSubs.reduce((s,x)=>s+(Number(x.v4)||0),0)/n).toFixed(1) : null;
+    // 합계 집계
+    const totGajung = branchSubs.reduce((s,x)=>s+(Number(x.v5)||0),0);
+    const totSipm = branchSubs.reduce((s,x)=>s+(Number(x.v6)||0),0);
+    return { ...b, actual, pct, sdCount, submitted: n, todayActual, avgMang, avgMujin, totGajung, totSipm, branchSubs };
   }).sort((a,b) => b.pct - a.pct);
 
   const tbody = document.getElementById('branchDetailTable');
   tbody.innerHTML = sorted.map((b, i) => {
     const rankClass = i===0?'rank-1':i===1?'rank-2':i===2?'rank-3':'rank-n';
     const pc = pctClass(b.pct);
-    return `<tr>
+    const hasData = b.submitted > 0;
+    const inputBadge = b.submitted === b.sdCount
+      ? `<span style="color:var(--green);font-weight:700">${b.submitted}/${b.sdCount}</span>`
+      : b.submitted > 0
+        ? `<span style="color:var(--yellow)">${b.submitted}/${b.sdCount}</span>`
+        : `<span style="color:var(--red)">0/${b.sdCount}</span>`;
+
+    // SD 상세 행 (드롭다운)
+    const sdRows = b.branchSubs.map(s => `
+      <tr class="sd-detail-row" style="background:rgba(255,255,255,0.03);display:none" data-branch="${b.id}">
+        <td></td>
+        <td style="padding-left:24px;color:var(--text2);font-size:12px">↳ ${s.name}</td>
+        <td>—</td>
+        <td style="color:var(--green);font-size:12px">${fmt(s.actual)}원</td>
+        <td>—</td>
+        <td style="font-size:12px">${fmt(s.v2)}원</td>
+        <td style="font-size:12px">${s.v3}망</td>
+        <td style="font-size:12px">${s.v4}%</td>
+        <td style="font-size:12px">${s.v5}건</td>
+        <td style="font-size:12px">${s.v6}건</td>
+        <td style="font-size:12px;color:var(--green)">${s.time}</td>
+      </tr>`).join('');
+
+    // 미입력 SD 행
+    const submittedNames = new Set(b.branchSubs.map(s=>s.name));
+    const pendingSDs = UNIQUE_SDS.filter(sd=>sd.branch===b.id && !submittedNames.has(sd.name));
+    const pendingRows = pendingSDs.map(sd => `
+      <tr class="sd-detail-row" style="background:rgba(255,255,255,0.02);display:none" data-branch="${b.id}">
+        <td></td>
+        <td style="padding-left:24px;color:var(--text2);font-size:12px">↳ ${sd.name}</td>
+        <td colspan="8" style="color:var(--red);font-size:11px">미입력</td>
+        <td></td>
+      </tr>`).join('');
+
+    return `<tr class="branch-row" onclick="toggleBranchDetail('${b.id}')" style="cursor:pointer">
       <td><span class="rank-badge ${rankClass}">${i+1}</span></td>
-      <td><strong>${b.name}</strong></td>
-      <td style="color:var(--text2)">${b.manager}</td>
-      <td>${fmt(b.target)}</td>
-      <td>${b.actual ? fmt(b.actual) : '—'}</td>
+      <td>
+        <span style="font-weight:700">${b.name.replace('지사','')}</span>
+        <span style="font-size:11px;color:var(--text2);margin-left:4px">${b.manager}</span>
+        <span id="arrow-${b.id}" style="float:right;color:var(--text2);font-size:11px">▼</span>
+      </td>
+      <td>${fmtW(b.target)}</td>
+      <td>${b.actual ? fmtW(b.actual) : '—'}</td>
       <td><span class="pct-chip ${pc}">${b.pct.toFixed(1)}%</span></td>
-      <td>${b.sdCount}명</td>
-      <td>${b.submitted > 0 ? `<span style="color:var(--green)">${b.submitted}명</span>` : '<span style="color:var(--red)">0</span>'}</td>
-      <td>${b.submitted > 0 ? Math.round(b.totMujin/b.submitted)+'%' : '—'}</td>
-      <td>${b.submitted > 0 ? b.totGajung+'건' : '—'}</td>
-      <td>${b.submitted > 0 ? b.totSipm+'건' : '—'}</td>
-    </tr>`;
+      <td>${hasData ? fmtW(b.todayActual) : '—'}</td>
+      <td>${hasData ? b.avgMang+'망' : '—'}</td>
+      <td>${hasData ? b.avgMujin+'%' : '—'}</td>
+      <td>${hasData ? b.totGajung+'건' : '—'}</td>
+      <td>${hasData ? b.totSipm+'건' : '—'}</td>
+      <td>${inputBadge}</td>
+    </tr>${sdRows}${pendingRows}`;
   }).join('');
+}
+
+function toggleBranchDetail(branchId) {
+  const rows = document.querySelectorAll(`.sd-detail-row[data-branch="${branchId}"]`);
+  const arrow = document.getElementById('arrow-' + branchId);
+  const isHidden = rows[0]?.style.display === 'none';
+  rows.forEach(r => r.style.display = isHidden ? 'table-row' : 'none');
+  if (arrow) arrow.textContent = isHidden ? '▲' : '▼';
 }
 
 // ==============================
@@ -940,17 +1055,21 @@ function onBranchChange() {
 
 function onSDChange() {
   const branch = document.getElementById('selectBranch').value;
+  const name = document.getElementById('selectSD').value;
   const state = getState();
-  const actual = state.actuals?.[branch] || '';
-  const input1 = document.getElementById('input1');
+  const actual = state.actuals?.[name + '|' + branch] || state.actuals?.[branch] || 0;
+  const disp = document.getElementById('actual-display');
+  const branch_data = BRANCHES.find(b => b.id === branch);
   if (actual) {
-    input1.value = fmt(actual);
-    input1.style.color = 'var(--green)';
+    const pct = branch_data ? (actual / branch_data.target * 100).toFixed(1) : '?';
+    disp.textContent = fmt(actual) + '원 (' + pct + '%)';
+    disp.style.color = 'var(--green)';
   } else {
-    input1.value = '';
-    input1.placeholder = '매니저님 업로드 후 자동표시';
-    input1.style.color = 'var(--text2)';
+    disp.textContent = '아직 오늘 일보 데이터가 없습니다';
+    disp.style.color = 'var(--text2)';
   }
+  // 제출 완료 메시지 초기화
+  document.getElementById('submitSuccess').style.display = 'none';
 }
 
 function submitSD() {
@@ -973,7 +1092,6 @@ function submitSD() {
   const now = new Date();
   const timeStr = now.getHours().toString().padStart(2,'0') + ':' + now.getMinutes().toString().padStart(2,'0');
 
-  // 저장
   const key = name + '|' + branch;
   if (!state.submissions) state.submissions = {};
   state.submissions[key] = {
@@ -983,35 +1101,13 @@ function submitSD() {
   };
   saveState(state);
 
-  // 단톡 텍스트 생성
-  const text = `${branchName} ${name}
-
-1. 현재실적 : ${fmt(actual)}원(${actual ? (actual/BRANCHES.find(b=>b.id===branch).target*100).toFixed(1) : '?'}%)
-
-2. 금일실적 : ${fmt(v2)}원
-(당월 ${fmt(v2)}원, 이월 0원)
-
-----3~6번 전일까지 누계+금일실적----
-
-3. 누적 10망 달성률 : ${v3}망(미달성망: ${v3b})
-
-4. 누적 무진 계약율 : ${v4}%(미계약 ${v4b}건)
-
-5. 누적 가정집 계약 건 : ${v5}건(통합약정 ${v5b}건)
-
-6. 누적 SIPM 계약건 : ${v6}건`;
-
-  const resultEl = document.getElementById('copyResult');
-  resultEl.textContent = text;
-  resultEl.style.display = 'block';
-  document.getElementById('copyBtnWrap').style.display = 'block';
+  // 제출 완료 메시지
+  document.getElementById('submitSuccess').style.display = 'block';
+  document.getElementById('submitInfo').textContent = `${branchName} ${name} · ${timeStr} 제출`;
   showToast('제출 완료!');
 }
 
-function copyText() {
-  const text = document.getElementById('copyResult').textContent;
-  navigator.clipboard.writeText(text).then(() => showToast('복사됐어요! 단톡에 붙여넣기 하세요 👍'));
-}
+
 
 // ==============================
 // 관리자
@@ -1118,7 +1214,7 @@ function setupRealtimeListener() {
     const data = snap.val() || { actuals: {}, submissions: {} };
     // 현재 활성 탭 리렌더
     const activeTab = document.querySelector('.tab.active')?.textContent;
-    if (activeTab?.includes('대시보드')) renderDashboard(data);
+    if (activeTab?.includes('대시보드') || activeTab?.includes('실적')) renderDashboard(data);
     if (activeTab?.includes('지사별')) renderBranchDetail(data);
     if (activeTab?.includes('입력 현황')) renderInputStatus(data);
     if (activeTab?.includes('관리자')) renderAdmin(data);
@@ -1145,7 +1241,6 @@ document.addEventListener('DOMContentLoaded', () => {
   // Firebase에서 초기 데이터 로드 후 렌더
   loadState(data => {
     localStorage.setItem('sg_firebase_cache', JSON.stringify(data));
-    renderDashboard();
     initSDForm();
   });
 
