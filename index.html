@@ -1,0 +1,1159 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>부산경남사업부 6월 Stretch Goal</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;600;700;800&display=swap');
+  
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  
+  :root {
+    --bg: #0d1117;
+    --surface: #161b22;
+    --surface2: #1c2128;
+    --border: #30363d;
+    --text: #e6edf3;
+    --text2: #8b949e;
+    --accent: #f97316;
+    --accent2: #fb923c;
+    --green: #3fb950;
+    --yellow: #d29922;
+    --red: #f85149;
+    --blue: #58a6ff;
+    --purple: #a371f7;
+  }
+
+  body {
+    font-family: 'Pretendard', -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  /* HEADER */
+  header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .header-left { display: flex; align-items: center; gap: 12px; }
+  .logo {
+    width: 36px; height: 36px;
+    background: var(--accent);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 800; font-size: 16px; color: white;
+  }
+  .header-title { font-size: 16px; font-weight: 700; }
+  .header-sub { font-size: 12px; color: var(--text2); margin-top: 1px; }
+
+  .dday-badge {
+    background: var(--accent);
+    color: white;
+    font-weight: 700;
+    font-size: 13px;
+    padding: 6px 14px;
+    border-radius: 20px;
+  }
+
+  /* NAV TABS */
+  .tabs {
+    display: flex;
+    border-bottom: 1px solid var(--border);
+    padding: 0 24px;
+    background: var(--surface);
+    gap: 4px;
+  }
+  .tab {
+    padding: 12px 16px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text2);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: all 0.15s;
+  }
+  .tab:hover { color: var(--text); }
+  .tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+  /* MAIN */
+  main { padding: 24px; max-width: 1400px; margin: 0 auto; }
+
+  /* KPI CARDS */
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+
+  .kpi-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+  }
+  .kpi-label { font-size: 11px; color: var(--text2); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+  .kpi-value { font-size: 24px; font-weight: 800; line-height: 1; }
+  .kpi-sub { font-size: 12px; color: var(--text2); margin-top: 4px; }
+  .kpi-accent { color: var(--accent); }
+  .kpi-green { color: var(--green); }
+  .kpi-yellow { color: var(--yellow); }
+  .kpi-red { color: var(--red); }
+
+  /* PROGRESS BAR */
+  .progress-wrap { margin-top: 10px; }
+  .progress-bar-bg {
+    background: var(--surface2);
+    border-radius: 4px;
+    height: 6px;
+    overflow: hidden;
+  }
+  .progress-bar-fill {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.5s ease;
+    background: var(--accent);
+  }
+  .progress-bar-fill.green { background: var(--green); }
+  .progress-bar-fill.yellow { background: var(--yellow); }
+
+  /* SECTION TITLE */
+  .section-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text2);
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .section-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* UPLOAD AREA */
+  .upload-section {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .upload-label { font-size: 14px; font-weight: 600; flex-shrink: 0; }
+  .upload-sub { font-size: 12px; color: var(--text2); }
+
+  .btn {
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    transition: all 0.15s;
+  }
+  .btn-primary { background: var(--accent); color: white; }
+  .btn-primary:hover { background: var(--accent2); }
+  .btn-secondary { background: var(--surface2); color: var(--text); border: 1px solid var(--border); }
+  .btn-secondary:hover { border-color: var(--text2); }
+  .btn-sm { padding: 5px 10px; font-size: 12px; }
+  .btn-green { background: var(--green); color: white; }
+
+  /* BRANCH TABLE */
+  .table-wrap {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 24px;
+  }
+  table { width: 100%; border-collapse: collapse; }
+  thead th {
+    background: var(--surface2);
+    padding: 10px 14px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text2);
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+  }
+  tbody tr { border-bottom: 1px solid var(--border); transition: background 0.1s; }
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr:hover { background: var(--surface2); }
+  td { padding: 10px 14px; font-size: 13px; }
+
+  .rank-badge {
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+  }
+  .rank-1 { background: #FFD700; color: #000; }
+  .rank-2 { background: #C0C0C0; color: #000; }
+  .rank-3 { background: #CD7F32; color: #fff; }
+  .rank-n { background: var(--surface2); color: var(--text2); }
+
+  .pct-chip {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 700;
+  }
+  .pct-high { background: rgba(63,185,80,0.15); color: var(--green); }
+  .pct-mid { background: rgba(210,153,34,0.15); color: var(--yellow); }
+  .pct-low { background: rgba(248,81,73,0.15); color: var(--red); }
+
+  /* SD INPUT STATUS */
+  .status-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+
+  .branch-status-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .branch-status-header {
+    padding: 12px 14px;
+    background: var(--surface2);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .branch-status-name { font-size: 13px; font-weight: 700; }
+  .input-status-badge {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 10px;
+  }
+  .all-done { background: rgba(63,185,80,0.15); color: var(--green); }
+  .partial { background: rgba(210,153,34,0.15); color: var(--yellow); }
+  .none-done { background: rgba(248,81,73,0.12); color: var(--red); }
+
+  .sd-row {
+    padding: 8px 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border);
+    font-size: 12px;
+  }
+  .sd-row:last-child { border-bottom: none; }
+  .sd-name { font-weight: 500; }
+  .sd-submitted { color: var(--green); font-weight: 600; }
+  .sd-pending { color: var(--text2); }
+
+  /* INPUT FORM */
+  .input-form {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 24px;
+    max-width: 560px;
+  }
+  .form-title { font-size: 16px; font-weight: 700; margin-bottom: 20px; }
+
+  .form-group { margin-bottom: 14px; }
+  .form-label { font-size: 12px; color: var(--text2); margin-bottom: 6px; display: block; font-weight: 500; }
+  .form-input, .form-select {
+    width: 100%;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 9px 12px;
+    color: var(--text);
+    font-size: 14px;
+    font-family: inherit;
+    transition: border-color 0.15s;
+  }
+  .form-input:focus, .form-select:focus {
+    outline: none;
+    border-color: var(--accent);
+  }
+  .form-input.readonly-field {
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .form-note { font-size: 11px; color: var(--text2); margin-top: 4px; }
+
+  .copy-result {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 14px;
+    font-size: 13px;
+    line-height: 1.8;
+    white-space: pre-wrap;
+    font-family: 'Pretendard', sans-serif;
+    margin-top: 16px;
+    display: none;
+  }
+
+  .divider { height: 1px; background: var(--border); margin: 20px 0; }
+
+  /* TOAST */
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: var(--green);
+    color: white;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.3s;
+    z-index: 999;
+  }
+  .toast.show { opacity: 1; transform: translateY(0); }
+
+  /* TABS CONTENT */
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  /* MISSING LIST */
+  .missing-section {
+    background: rgba(248,81,73,0.06);
+    border: 1px solid rgba(248,81,73,0.2);
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin-bottom: 24px;
+  }
+  .missing-title { font-size: 13px; font-weight: 700; color: var(--red); margin-bottom: 10px; }
+  .missing-list { display: flex; flex-wrap: wrap; gap: 6px; }
+  .missing-chip {
+    background: rgba(248,81,73,0.1);
+    border: 1px solid rgba(248,81,73,0.25);
+    border-radius: 4px;
+    padding: 3px 9px;
+    font-size: 12px;
+    color: var(--red);
+  }
+
+  @media (max-width: 768px) {
+    main { padding: 16px; }
+    .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+    header { padding: 12px 16px; }
+    .tabs { padding: 0 12px; }
+  }
+</style>
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+</head>
+<body>
+
+<header>
+  <div class="header-left">
+    <div class="logo">BN</div>
+    <div>
+      <div class="header-title">부산경남사업부 · 6월 Stretch Goal</div>
+      <div class="header-sub">2025년 6월 — 24개 지사 종합 현황</div>
+    </div>
+  </div>
+  <div class="dday-badge" id="ddayBadge">D-?</div>
+</header>
+
+<div class="tabs">
+  <div class="tab active" onclick="switchTab('dashboard')">📊 대시보드</div>
+  <div class="tab" onclick="switchTab('branches')">🏢 지사별 현황</div>
+  <div class="tab" onclick="switchTab('input-status')">✅ 입력 현황</div>
+  <div class="tab" onclick="switchTab('sd-input')">✏️ SD 입력</div>
+  <div class="tab" onclick="switchTab('admin')">⚙️ 관리자</div>
+</div>
+
+<main>
+
+<!-- ===== 대시보드 탭 ===== -->
+<div class="tab-content active" id="tab-dashboard">
+
+  <div class="kpi-grid" id="kpiGrid">
+    <div class="kpi-card">
+      <div class="kpi-label">전체 달성률</div>
+      <div class="kpi-value kpi-accent" id="kpi-pct">—</div>
+      <div class="kpi-sub" id="kpi-pct-sub">목표 대비</div>
+      <div class="progress-wrap">
+        <div class="progress-bar-bg"><div class="progress-bar-fill" id="bar-pct" style="width:0%"></div></div>
+      </div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">누적 실적</div>
+      <div class="kpi-value kpi-green" id="kpi-actual">—</div>
+      <div class="kpi-sub" id="kpi-actual-sub">원</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">전체 목표</div>
+      <div class="kpi-value" id="kpi-target">1,746억</div>
+      <div class="kpi-sub">24개 지사 합산</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">오늘 입력완료</div>
+      <div class="kpi-value kpi-green" id="kpi-submitted">0명</div>
+      <div class="kpi-sub" id="kpi-submitted-sub">/ 39명 SD</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">미입력</div>
+      <div class="kpi-value kpi-red" id="kpi-pending">—</div>
+      <div class="kpi-sub">아직 미제출</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">마감까지</div>
+      <div class="kpi-value kpi-yellow" id="kpi-dday">—</div>
+      <div class="kpi-sub">영업일 기준</div>
+    </div>
+  </div>
+
+  <!-- 미입력 인원 -->
+  <div class="missing-section" id="missingSection" style="display:none">
+    <div class="missing-title">⚠️ 미입력 인원</div>
+    <div class="missing-list" id="missingList"></div>
+  </div>
+
+  <!-- 지사 순위 요약 -->
+  <div class="section-title">지사 달성률 순위</div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>순위</th>
+          <th>지사</th>
+          <th>지사장</th>
+          <th>목표</th>
+          <th>실적</th>
+          <th>달성률</th>
+          <th>진행</th>
+        </tr>
+      </thead>
+      <tbody id="dashboardBranchTable"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ===== 지사별 현황 탭 ===== -->
+<div class="tab-content" id="tab-branches">
+  <div class="section-title">지사별 상세 현황</div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>순위</th>
+          <th>지사</th>
+          <th>지사장</th>
+          <th>목표(원)</th>
+          <th>실적(원)</th>
+          <th>달성률</th>
+          <th>SD수</th>
+          <th>입력완료</th>
+          <th>무진계약율</th>
+          <th>가정집계약</th>
+          <th>SIPM</th>
+        </tr>
+      </thead>
+      <tbody id="branchDetailTable"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ===== 입력 현황 탭 ===== -->
+<div class="tab-content" id="tab-input-status">
+  <div class="section-title">오늘의 SD 입력 현황</div>
+  <div class="status-grid" id="statusGrid"></div>
+</div>
+
+<!-- ===== SD 입력 탭 ===== -->
+<div class="tab-content" id="tab-sd-input">
+  <div class="input-form">
+    <div class="form-title">📝 오늘의 실적 입력</div>
+
+    <div class="form-group">
+      <label class="form-label">지사 선택</label>
+      <select class="form-select" id="selectBranch" onchange="onBranchChange()">
+        <option value="">-- 지사를 선택하세요 --</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">이름 선택</label>
+      <select class="form-select" id="selectSD" onchange="onSDChange()">
+        <option value="">-- 이름을 선택하세요 --</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">① 현재실적 (원) <span style="color:var(--accent);font-size:11px">매니저 업로드 자동반영</span></label>
+      <input type="text" class="form-input readonly-field" id="input1" readonly placeholder="일보 데이터 자동입력">
+      <div class="form-note">매일 오전 매니저님이 업로드 후 자동표시</div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="form-group">
+      <label class="form-label">② 금일실적 (원)</label>
+      <input type="number" class="form-input" id="input2" placeholder="예: 460000">
+      <div class="form-note">당월 금액 입력 (이월 별도)</div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">③ 누적 10망 달성률 (명)</label>
+      <input type="number" class="form-input" id="input3" placeholder="예: 6">
+      <div class="form-note">미달성망 입력란 (아래에 직접 입력)</div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">③-1 미달성망 (쉼표로 구분)</label>
+      <input type="text" class="form-input" id="input3b" placeholder="예: SIPM,바이퍼,살균기,정수기">
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">④ 누적 무진 계약율 (%)</label>
+      <input type="number" class="form-input" id="input4" placeholder="예: 75">
+      <div class="form-note">미계약 건수도 입력하세요</div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">④-1 미계약 건수</label>
+      <input type="number" class="form-input" id="input4b" placeholder="예: 1">
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">⑤ 누적 가정집 계약 건 (건)</label>
+      <input type="number" class="form-input" id="input5" placeholder="예: 1">
+      <div class="form-note">통합약정 건수도 입력</div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">⑤-1 통합약정 건수</label>
+      <input type="number" class="form-input" id="input5b" placeholder="예: 1">
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">⑥ 누적 SIPM 계약건 (건)</label>
+      <input type="number" class="form-input" id="input6" placeholder="예: 0">
+    </div>
+
+    <button class="btn btn-primary" style="width:100%;padding:12px;font-size:14px;margin-top:4px" onclick="submitSD()">
+      제출하고 단톡용 텍스트 생성
+    </button>
+
+    <div class="copy-result" id="copyResult"></div>
+    <div id="copyBtnWrap" style="display:none;margin-top:10px">
+      <button class="btn btn-green" style="width:100%" onclick="copyText()">📋 복사하기 (단톡에 붙여넣기)</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 관리자 탭 ===== -->
+<div class="tab-content" id="tab-admin">
+  <div class="upload-section">
+    <div>
+      <div class="upload-label">📁 일보 실적 업로드</div>
+      <div class="upload-sub">매일 아침 엑셀 파일을 업로드하면 ① 현재실적이 자동 반영됩니다</div>
+    </div>
+    <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+      <input type="file" id="excelFile" accept=".xlsx,.xls" style="display:none" onchange="handleExcelUpload(event)">
+      <button class="btn btn-primary" onclick="document.getElementById('excelFile').click()">엑셀 업로드</button>
+      <button class="btn btn-secondary btn-sm" onclick="showManualInput()">수동 입력</button>
+    </div>
+  </div>
+
+  <div id="manualInputArea" style="display:none;margin-bottom:24px">
+    <div class="section-title">수동 실적 입력 (이름 검색)</div>
+    <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap">
+      <input type="text" class="form-input" id="manualSearch" placeholder="이름 입력 (예: 엄상준)" style="max-width:200px">
+      <input type="number" id="manualAmount" class="form-input" placeholder="실적 금액 (원)" style="max-width:200px">
+      <button class="btn btn-primary" onclick="saveManualInput()">저장</button>
+    </div>
+    <div id="manualLog" style="font-size:12px;color:var(--text2)"></div>
+  </div>
+
+  <div class="section-title">전체 SD 실적 현황</div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>이름</th><th>지사</th><th>현재실적(원)</th><th>금일실적</th>
+          <th>무진율</th><th>가정집</th><th>SIPM</th><th>입력시간</th><th>초기화</th>
+        </tr>
+      </thead>
+      <tbody id="adminTable"></tbody>
+    </table>
+  </div>
+</div>
+
+</main>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ==============================
+// 데이터 정의
+// ==============================
+const BRANCHES = [
+  { id:"부산기장", name:"부산기장지사", manager:"강현묵", sd:2, target:8137000000 },
+  { id:"울산북부", name:"울산북부지사", manager:"김대성", sd:1, target:4994000000 },
+  { id:"사천남해", name:"사천남해지사", manager:"김창호", sd:2, target:3719000000 },
+  { id:"김해남부", name:"김해남부지사", manager:"김세호", sd:2, target:6583000000 },
+  { id:"울산남부", name:"울산남부지사", manager:"손창민", sd:2, target:11384000000 },
+  { id:"진주서부", name:"진주서부지사", manager:"임성돈", sd:1, target:6111000000 },
+  { id:"부산북부", name:"부산북부지사", manager:"안병천", sd:1, target:7019000000 },
+  { id:"해운대",   name:"해운대지사",   manager:"박수현", sd:2, target:8032000000 },
+  { id:"양산",     name:"양산지사",     manager:"김동민", sd:2, target:7316000000 },
+  { id:"울산중부", name:"울산중부지사", manager:"정상혁", sd:2, target:6356000000 },
+  { id:"부산서부", name:"부산서부지사", manager:"김진호", sd:2, target:8643000000 },
+  { id:"부산사하", name:"부산사하지사", manager:"임형준", sd:2, target:5273000000 },
+  { id:"김해북부", name:"김해북부지사", manager:"권금주", sd:2, target:7997000000 },
+  { id:"진주동부", name:"진주동부지사", manager:"양용석", sd:1, target:6391000000 },
+  { id:"부산남부", name:"부산남부지사", manager:"소동훈", sd:2, target:10162000000 },
+  { id:"창원서부", name:"창원서부지사", manager:"박무성", sd:1, target:5570000000 },
+  { id:"부산수영", name:"부산수영지사", manager:"서혜교", sd:2, target:6600000000 },
+  { id:"부산진구", name:"부산진구지사", manager:"박병갑", sd:2, target:9760000000 },
+  { id:"창원동부", name:"창원동부지사", manager:"최준혁", sd:2, target:5500000000 },
+  { id:"부산동래", name:"부산동래지사", manager:"임종규", sd:2, target:8172000000 },
+  { id:"창원북부", name:"창원북부지사", manager:"이상배", sd:1, target:7194000000 },
+  { id:"창원남부", name:"창원남부지사", manager:"임진섭", sd:1, target:6705000000 },
+  { id:"거제통영", name:"거제통영지사", manager:"이태곤", sd:1, target:7211000000 },
+  { id:"울산서부", name:"울산서부지사", manager:"안성훈", sd:3, target:9778000000 },
+];
+
+const SD_LIST = [
+  { name:"엄상준", branch:"부산기장" },
+  { name:"최준호", branch:"부산기장" },
+  { name:"신호일", branch:"울산북부" },
+  { name:"장지승", branch:"사천남해" },
+  { name:"안재이", branch:"사천남해" },
+  { name:"안덕욱", branch:"김해남부" },
+  { name:"최수영", branch:"김해남부" },
+  { name:"허성덕", branch:"울산남부" },
+  { name:"허은영", branch:"울산남부" },
+  { name:"정원환", branch:"진주서부" },
+  { name:"문병윤", branch:"부산북부" },
+  { name:"이구영", branch:"해운대" },
+  { name:"조용진", branch:"해운대" },
+  { name:"이영익", branch:"양산" },
+  { name:"이구영", branch:"양산" },
+  { name:"김성근", branch:"울산중부" },
+  { name:"김현성", branch:"울산중부" },
+  { name:"안형민", branch:"부산서부" },
+  { name:"이수하", branch:"부산서부" },
+  { name:"김경원", branch:"부산사하" },
+  { name:"박진수", branch:"부산사하" },
+  { name:"김선경", branch:"김해북부" },
+  { name:"박찬우", branch:"김해북부" },
+  { name:"류승목", branch:"진주동부" },
+  { name:"박지완", branch:"부산남부" },
+  { name:"김지승", branch:"부산남부" },
+  { name:"조상엽", branch:"창원서부" },
+  { name:"정연진", branch:"부산수영" },
+  { name:"김현성", branch:"부산수영" },
+  { name:"권오성", branch:"부산진구" },
+  { name:"박근태", branch:"부산진구" },
+  { name:"차민호", branch:"창원동부" },
+  { name:"박선정", branch:"부산동래" },
+  { name:"박근태", branch:"부산동래" },
+  { name:"문해진", branch:"창원북부" },
+  { name:"송해민", branch:"창원남부" },
+  { name:"황관영", branch:"창원남부" },
+  { name:"이수하", branch:"거제통영" },
+  { name:"김미나", branch:"울산서부" },
+  { name:"전우민", branch:"울산서부" },
+  { name:"김경은", branch:"울산서부" },
+];
+
+// 중복 제거된 SD 목록
+const UNIQUE_SDS = [];
+const seen = new Set();
+SD_LIST.forEach(sd => {
+  const key = sd.name + '|' + sd.branch;
+  if (!seen.has(key)) { seen.add(key); UNIQUE_SDS.push(sd); }
+});
+
+// ==============================
+// 상태 관리 (localStorage)
+// ==============================
+function getState() {
+  const raw = localStorage.getItem('sg_state_june2025');
+  if (!raw) return { actuals: {}, submissions: {}, todayDate: '' };
+  return JSON.parse(raw);
+}
+function saveState(state) {
+  localStorage.setItem('sg_state_june2025', JSON.stringify(state));
+}
+
+// ==============================
+// 유틸
+// ==============================
+function fmt(n) {
+  if (!n && n !== 0) return '—';
+  return Number(n).toLocaleString('ko-KR');
+}
+function fmtW(n) {
+  if (!n && n !== 0) return '—';
+  const v = Number(n);
+  if (v >= 100000000) return (v/100000000).toFixed(1) + '억';
+  if (v >= 10000000) return (v/10000000).toFixed(1) + '천만';
+  if (v >= 1000000) return (v/1000000).toFixed(1) + '백만';
+  return fmt(v);
+}
+function pctClass(p) {
+  if (p >= 80) return 'pct-high';
+  if (p >= 50) return 'pct-mid';
+  return 'pct-low';
+}
+function getDDay() {
+  const now = new Date();
+  const end = new Date(now.getFullYear(), now.getMonth() + 1, 0); // 말일
+  const diff = Math.ceil((end - now) / (1000*60*60*24));
+  return diff;
+}
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// ==============================
+// 탭 전환
+// ==============================
+function switchTab(id) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  event.target.classList.add('active');
+  document.getElementById('tab-' + id).classList.add('active');
+  if (id === 'dashboard') renderDashboard();
+  if (id === 'branches') renderBranchDetail();
+  if (id === 'input-status') renderInputStatus();
+  if (id === 'admin') renderAdmin();
+}
+
+// ==============================
+// 대시보드 렌더
+// ==============================
+function renderDashboard() {
+  const state = getState();
+  const dday = getDDay();
+  document.getElementById('ddayBadge').textContent = 'D-' + dday;
+  document.getElementById('kpi-dday').textContent = dday + '일';
+
+  const TOTAL_TARGET = BRANCHES.reduce((s,b) => s+b.target, 0);
+  
+  // 지사별 실적 집계 (actuals에서 가져옴)
+  let totalActual = 0;
+  const branchActuals = {};
+  BRANCHES.forEach(b => {
+    const actual = Number(state.actuals?.[b.id] || 0);
+    branchActuals[b.id] = actual;
+    totalActual += actual;
+  });
+
+  const pct = TOTAL_TARGET > 0 ? Math.round(totalActual / TOTAL_TARGET * 1000) / 10 : 0;
+  document.getElementById('kpi-pct').textContent = pct + '%';
+  document.getElementById('kpi-pct-sub').textContent = '목표 대비';
+  document.getElementById('kpi-actual').textContent = fmtW(totalActual);
+  document.getElementById('kpi-actual-sub').textContent = fmt(totalActual) + '원';
+
+  const barEl = document.getElementById('bar-pct');
+  barEl.style.width = Math.min(pct, 100) + '%';
+  barEl.className = 'progress-bar-fill' + (pct >= 80 ? ' green' : pct >= 50 ? ' yellow' : '');
+
+  // 입력 현황
+  const today = new Date().toDateString();
+  const todaySubmissions = Object.values(state.submissions || {}).filter(s => s.date === today);
+  const submitted = todaySubmissions.length;
+  const total = UNIQUE_SDS.length;
+  document.getElementById('kpi-submitted').textContent = submitted + '명';
+  document.getElementById('kpi-submitted-sub').textContent = `/ ${total}명 SD`;
+  document.getElementById('kpi-pending').textContent = (total - submitted) + '명';
+
+  // 미입력 인원
+  const submittedNames = new Set(todaySubmissions.map(s => s.name + '|' + s.branch));
+  const missing = UNIQUE_SDS.filter(sd => !submittedNames.has(sd.name + '|' + sd.branch));
+  const missingSec = document.getElementById('missingSection');
+  const missingList = document.getElementById('missingList');
+  if (missing.length > 0) {
+    missingSec.style.display = 'block';
+    missingList.innerHTML = missing.map(sd =>
+      `<span class="missing-chip">${sd.name} (${sd.branch})</span>`
+    ).join('');
+  } else {
+    missingSec.style.display = 'none';
+  }
+
+  // 지사 순위 테이블
+  const sorted = [...BRANCHES].map(b => {
+    const actual = branchActuals[b.id] || 0;
+    const pct = b.target > 0 ? actual / b.target * 100 : 0;
+    return { ...b, actual, pct };
+  }).sort((a,b) => b.pct - a.pct);
+
+  const tbody = document.getElementById('dashboardBranchTable');
+  tbody.innerHTML = sorted.map((b, i) => {
+    const rankClass = i === 0 ? 'rank-1' : i === 1 ? 'rank-2' : i === 2 ? 'rank-3' : 'rank-n';
+    const p = b.pct.toFixed(1);
+    const pc = pctClass(b.pct);
+    const barW = Math.min(b.pct, 100).toFixed(0);
+    return `<tr>
+      <td><span class="rank-badge ${rankClass}">${i+1}</span></td>
+      <td><strong>${b.name}</strong></td>
+      <td style="color:var(--text2)">${b.manager}</td>
+      <td>${fmtW(b.target)}</td>
+      <td>${fmtW(b.actual)}</td>
+      <td><span class="pct-chip ${pc}">${p}%</span></td>
+      <td style="min-width:100px">
+        <div class="progress-bar-bg"><div class="progress-bar-fill ${b.pct>=80?'green':b.pct>=50?'yellow':''}" style="width:${barW}%"></div></div>
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+// ==============================
+// 지사별 상세
+// ==============================
+function renderBranchDetail() {
+  const state = getState();
+  const today = new Date().toDateString();
+  const todaySubs = Object.values(state.submissions || {}).filter(s => s.date === today);
+
+  const sorted = [...BRANCHES].map(b => {
+    const actual = Number(state.actuals?.[b.id] || 0);
+    const pct = b.target > 0 ? actual / b.target * 100 : 0;
+    const branchSubs = todaySubs.filter(s => s.branch === b.id);
+    const sdCount = UNIQUE_SDS.filter(sd => sd.branch === b.id).length;
+    // 집계
+    const totMujin = branchSubs.reduce((s,x)=>s+(Number(x.mujinPct)||0),0);
+    const totGajung = branchSubs.reduce((s,x)=>s+(Number(x.gajung)||0),0);
+    const totSipm = branchSubs.reduce((s,x)=>s+(Number(x.sipm)||0),0);
+    return { ...b, actual, pct, sdCount, submitted: branchSubs.length, totMujin, totGajung, totSipm };
+  }).sort((a,b) => b.pct - a.pct);
+
+  const tbody = document.getElementById('branchDetailTable');
+  tbody.innerHTML = sorted.map((b, i) => {
+    const rankClass = i===0?'rank-1':i===1?'rank-2':i===2?'rank-3':'rank-n';
+    const pc = pctClass(b.pct);
+    return `<tr>
+      <td><span class="rank-badge ${rankClass}">${i+1}</span></td>
+      <td><strong>${b.name}</strong></td>
+      <td style="color:var(--text2)">${b.manager}</td>
+      <td>${fmt(b.target)}</td>
+      <td>${b.actual ? fmt(b.actual) : '—'}</td>
+      <td><span class="pct-chip ${pc}">${b.pct.toFixed(1)}%</span></td>
+      <td>${b.sdCount}명</td>
+      <td>${b.submitted > 0 ? `<span style="color:var(--green)">${b.submitted}명</span>` : '<span style="color:var(--red)">0</span>'}</td>
+      <td>${b.submitted > 0 ? Math.round(b.totMujin/b.submitted)+'%' : '—'}</td>
+      <td>${b.submitted > 0 ? b.totGajung+'건' : '—'}</td>
+      <td>${b.submitted > 0 ? b.totSipm+'건' : '—'}</td>
+    </tr>`;
+  }).join('');
+}
+
+// ==============================
+// 입력 현황
+// ==============================
+function renderInputStatus() {
+  const state = getState();
+  const today = new Date().toDateString();
+  const todaySubs = Object.values(state.submissions || {}).filter(s => s.date === today);
+  const submittedKeys = new Set(todaySubs.map(s => s.name + '|' + s.branch));
+
+  const grid = document.getElementById('statusGrid');
+  grid.innerHTML = BRANCHES.map(b => {
+    const branchSDs = UNIQUE_SDS.filter(sd => sd.branch === b.id);
+    const doneCnt = branchSDs.filter(sd => submittedKeys.has(sd.name+'|'+sd.branch)).length;
+    const total = branchSDs.length;
+    const statusClass = doneCnt === total ? 'all-done' : doneCnt > 0 ? 'partial' : 'none-done';
+    const statusText = doneCnt === total ? '완료' : `${doneCnt}/${total}`;
+
+    return `<div class="branch-status-card">
+      <div class="branch-status-header">
+        <div class="branch-status-name">${b.name}</div>
+        <span class="input-status-badge ${statusClass}">${statusText}</span>
+      </div>
+      ${branchSDs.map(sd => {
+        const done = submittedKeys.has(sd.name+'|'+sd.branch);
+        const sub = todaySubs.find(s => s.name===sd.name && s.branch===sd.branch);
+        return `<div class="sd-row">
+          <span class="sd-name">${sd.name}</span>
+          ${done
+            ? `<span class="sd-submitted">✓ ${sub?.time || ''}</span>`
+            : `<span class="sd-pending">미입력</span>`}
+        </div>`;
+      }).join('')}
+    </div>`;
+  }).join('');
+}
+
+// ==============================
+// SD 입력 폼
+// ==============================
+function initSDForm() {
+  const branchSel = document.getElementById('selectBranch');
+  BRANCHES.forEach(b => {
+    const opt = document.createElement('option');
+    opt.value = b.id; opt.textContent = b.name;
+    branchSel.appendChild(opt);
+  });
+}
+
+function onBranchChange() {
+  const branch = document.getElementById('selectBranch').value;
+  const sdSel = document.getElementById('selectSD');
+  sdSel.innerHTML = '<option value="">-- 이름을 선택하세요 --</option>';
+  if (!branch) return;
+  UNIQUE_SDS.filter(sd => sd.branch === branch).forEach(sd => {
+    const opt = document.createElement('option');
+    opt.value = sd.name; opt.textContent = sd.name;
+    sdSel.appendChild(opt);
+  });
+}
+
+function onSDChange() {
+  const branch = document.getElementById('selectBranch').value;
+  const state = getState();
+  const actual = state.actuals?.[branch] || '';
+  const input1 = document.getElementById('input1');
+  if (actual) {
+    input1.value = fmt(actual);
+    input1.style.color = 'var(--green)';
+  } else {
+    input1.value = '';
+    input1.placeholder = '매니저님 업로드 후 자동표시';
+    input1.style.color = 'var(--text2)';
+  }
+}
+
+function submitSD() {
+  const branch = document.getElementById('selectBranch').value;
+  const name = document.getElementById('selectSD').value;
+  if (!branch || !name) { showToast('지사와 이름을 선택하세요'); return; }
+
+  const state = getState();
+  const actual = state.actuals?.[branch] || 0;
+  const v2 = document.getElementById('input2').value || '0';
+  const v3 = document.getElementById('input3').value || '0';
+  const v3b = document.getElementById('input3b').value || '';
+  const v4 = document.getElementById('input4').value || '0';
+  const v4b = document.getElementById('input4b').value || '0';
+  const v5 = document.getElementById('input5').value || '0';
+  const v5b = document.getElementById('input5b').value || '0';
+  const v6 = document.getElementById('input6').value || '0';
+
+  const branchName = BRANCHES.find(b=>b.id===branch)?.name || branch;
+  const now = new Date();
+  const timeStr = now.getHours().toString().padStart(2,'0') + ':' + now.getMinutes().toString().padStart(2,'0');
+
+  // 저장
+  const key = name + '|' + branch;
+  if (!state.submissions) state.submissions = {};
+  state.submissions[key] = {
+    name, branch, branchName,
+    actual, v2, v3, v3b, v4, v4b, v5, v5b, v6,
+    date: now.toDateString(), time: timeStr, mujinPct: v4, gajung: v5, sipm: v6
+  };
+  saveState(state);
+
+  // 단톡 텍스트 생성
+  const text = `${branchName} ${name}
+
+1. 현재실적 : ${fmt(actual)}원(${actual ? (actual/BRANCHES.find(b=>b.id===branch).target*100).toFixed(1) : '?'}%)
+
+2. 금일실적 : ${fmt(v2)}원
+(당월 ${fmt(v2)}원, 이월 0원)
+
+----3~6번 전일까지 누계+금일실적----
+
+3. 누적 10망 달성률 : ${v3}망(미달성망: ${v3b})
+
+4. 누적 무진 계약율 : ${v4}%(미계약 ${v4b}건)
+
+5. 누적 가정집 계약 건 : ${v5}건(통합약정 ${v5b}건)
+
+6. 누적 SIPM 계약건 : ${v6}건`;
+
+  const resultEl = document.getElementById('copyResult');
+  resultEl.textContent = text;
+  resultEl.style.display = 'block';
+  document.getElementById('copyBtnWrap').style.display = 'block';
+  showToast('제출 완료!');
+}
+
+function copyText() {
+  const text = document.getElementById('copyResult').textContent;
+  navigator.clipboard.writeText(text).then(() => showToast('복사됐어요! 단톡에 붙여넣기 하세요 👍'));
+}
+
+// ==============================
+// 관리자
+// ==============================
+function showManualInput() {
+  const el = document.getElementById('manualInputArea');
+  el.style.display = el.style.display === 'none' ? 'block' : 'none';
+}
+
+function saveManualInput() {
+  const name = document.getElementById('manualSearch').value.trim();
+  const amount = document.getElementById('manualAmount').value;
+  if (!name || !amount) { showToast('이름과 금액을 입력하세요'); return; }
+  
+  const sd = UNIQUE_SDS.find(s => s.name === name);
+  if (!sd) { showToast('해당 이름을 찾을 수 없어요'); return; }
+
+  const state = getState();
+  if (!state.actuals) state.actuals = {};
+  state.actuals[sd.branch] = Number(amount);
+  saveState(state);
+  
+  document.getElementById('manualLog').textContent = `✓ ${sd.branch} - ${name}: ${fmt(amount)}원 저장됨`;
+  showToast(`${name} 실적 저장 완료`);
+  renderAdmin();
+}
+
+function handleExcelUpload(e) {
+  showToast('엑셀 파싱 기능은 별도 구현이 필요합니다. 수동 입력을 이용해주세요.');
+}
+
+function resetSD(name, branch) {
+  if (!confirm(`${name} (${branch}) 데이터를 삭제하시겠습니까?`)) return;
+  const state = getState();
+  const key = name + '|' + branch;
+  delete state.submissions?.[key];
+  saveState(state);
+  renderAdmin();
+  showToast('삭제됨');
+}
+
+function renderAdmin() {
+  const state = getState();
+  const today = new Date().toDateString();
+  const todaySubs = Object.values(state.submissions || {}).filter(s => s.date === today);
+
+  const tbody = document.getElementById('adminTable');
+  tbody.innerHTML = UNIQUE_SDS.map(sd => {
+    const sub = todaySubs.find(s => s.name===sd.name && s.branch===sd.branch);
+    const actual = state.actuals?.[sd.branch] || 0;
+    return `<tr>
+      <td><strong>${sd.name}</strong></td>
+      <td style="color:var(--text2)">${sd.branch}</td>
+      <td>${actual ? fmt(actual) : '<span style="color:var(--red)">미입력</span>'}</td>
+      <td>${sub ? fmt(sub.v2) : '—'}</td>
+      <td>${sub ? sub.v4+'%' : '—'}</td>
+      <td>${sub ? sub.v5+'건' : '—'}</td>
+      <td>${sub ? sub.v6+'건' : '—'}</td>
+      <td>${sub ? '<span style="color:var(--green)">'+sub.time+'</span>' : '<span style="color:var(--text2)">미제출</span>'}</td>
+      <td>${sub ? `<button class="btn btn-secondary btn-sm" onclick="resetSD('${sd.name}','${sd.branch}')">초기화</button>` : ''}</td>
+    </tr>`;
+  }).join('');
+}
+
+// ==============================
+// Firebase 초기화
+// ==============================
+const firebaseConfig = {
+  apiKey: "AIzaSyC3U6zpXDCXB-1aUTK_FuktKIvgNe3OIl0",
+  authDomain: "june-stretch-goal.firebaseapp.com",
+  databaseURL: "https://june-stretch-goal-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "june-stretch-goal",
+  storageBucket: "june-stretch-goal.firebasestorage.app",
+  messagingSenderId: "65586170182",
+  appId: "1:65586170182:web:305587b7c9b0ed6fd57d47"
+};
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+
+// Firebase에서 상태 로드
+function loadState(callback) {
+  const today = new Date().toDateString();
+  db.ref('stretch').once('value', snap => {
+    const data = snap.val() || { actuals: {}, submissions: {} };
+    // 오늘 날짜 아닌 submissions 필터링
+    if (data.submissions) {
+      Object.keys(data.submissions).forEach(k => {
+        if (data.submissions[k].date !== today) delete data.submissions[k];
+      });
+    }
+    callback(data);
+  });
+}
+
+// Firebase에 상태 저장
+function saveToFirebase(path, value) {
+  db.ref('stretch/' + path).set(value);
+}
+
+// 실시간 리스너
+function setupRealtimeListener() {
+  db.ref('stretch').on('value', snap => {
+    const data = snap.val() || { actuals: {}, submissions: {} };
+    // 현재 활성 탭 리렌더
+    const activeTab = document.querySelector('.tab.active')?.textContent;
+    if (activeTab?.includes('대시보드')) renderDashboard(data);
+    if (activeTab?.includes('지사별')) renderBranchDetail(data);
+    if (activeTab?.includes('입력 현황')) renderInputStatus(data);
+    if (activeTab?.includes('관리자')) renderAdmin(data);
+  });
+}
+
+// ==============================
+// 상태 관리 (Firebase 기반으로 교체)
+// ==============================
+function getState() {
+  // Firebase 비동기라 로컬캐시 병행 사용
+  const raw = localStorage.getItem('sg_firebase_cache');
+  return raw ? JSON.parse(raw) : { actuals: {}, submissions: {} };
+}
+function saveState(state) {
+  localStorage.setItem('sg_firebase_cache', JSON.stringify(state));
+  db.ref('stretch').set(state);
+}
+
+// ==============================
+// 초기화
+// ==============================
+document.addEventListener('DOMContentLoaded', () => {
+  // Firebase에서 초기 데이터 로드 후 렌더
+  loadState(data => {
+    localStorage.setItem('sg_firebase_cache', JSON.stringify(data));
+    renderDashboard();
+    initSDForm();
+  });
+
+  setupRealtimeListener();
+
+  const dday = getDDay();
+  document.getElementById('ddayBadge').textContent = 'D-' + dday;
+});
+</script>
+</body>
+</html>
